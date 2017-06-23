@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+   guru_webservice:
+     image: guru/guru-back:latest
+     restart: always
+     environment:
+       - "SYSTEM_ENVIRONMENT=production"
+       - "DATASOURCE_URL=jdbc:mysql://199.189.87.11/guru?autoReconnect=true&useSSL=false"
+       - "DATASOURCE_USERNAME=guru"
+       - "DATASOURCE_PASSWORD=wSHWsX3JyEQHOdzt7g5W"
+       - "VIRTUAL_HOST=guruapi.condor1693.dedicatedpanel.com"
+     networks:
+      - docker_default
+
+networks:
+  docker_default:
+    external:
+      name: docker_default

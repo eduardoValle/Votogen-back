@@ -1,0 +1,21 @@
+image: maven:3-jdk-8
+
+variables:
+  DOCKER_HOST: tcp://209.126.108.49:4243
+
+release:
+  script: 
+  - sed -i "s/__CI_IMAGE_TAG__/$CI_BUILD_REF/" pom.xml
+  - mvn clean compile package docker:build -B
+
+deploy:
+  image: registry.gitlab.com/gitlab-examples/kubernetes-deploy
+  environment: production
+  only:
+      - master@guru/guru-back
+  script:
+    - sed -i "s/__CI_IMAGE_TAG__/$CI_BUILD_REF/" guru-deployment.yml
+    - kubectl config set-cluster test-doc --server=http://localhost:8080
+    - kubectl config set-context test-doc --cluster=test-doc
+    - kubectl config use-context test-doc
+    - kubectl create -f guru-deployment.yml || kubectl apply -f guru-deployment.yml

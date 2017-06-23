@@ -1,0 +1,16 @@
+system:
+  token:
+    header: access-token
+    secret: 3a3f99ae540598060a914537494245c1
+    expiration: 604800
+
+login:
+  facebook:
+    appId: 765985880223944
+    appSecret: 4967c3813d7891b49534c9bc488899f7
+
+spring:
+  profiles:
+   active: ${SYSTEM_ENVIRONMENT:development}
+play:
+  numberOfCards: 8

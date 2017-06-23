@@ -1,0 +1,1 @@
+alter table user_historic alter column message long text;

@@ -1,0 +1,14 @@
+spring:
+  profiles: development
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/votogen
+    username: root
+    password:
+  jpa:
+    database: MYSQL
+    generate-ddl: true
+    ddl-auto: create
+
+server:
+  port: 8080
