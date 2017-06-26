@@ -1,10 +1,6 @@
 package org.develop.guru.security;
 
 import org.develop.guru.config.TokenUtils;
-import org.develop.guru.entities.Codes;
-import org.develop.guru.repository.CodeRepository;
-import org.develop.guru.service.CodeService;
-import org.develop.guru.service.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,9 +28,6 @@ public class AuthenticationService {
 
     @Autowired
     private SystemUserRepository systemUserRepo;
-
-    @Autowired
-    private CodeRepository codeRepository;
 
     public Response login(String username, String password) {
         Response r = new Response();
@@ -139,29 +132,5 @@ public class AuthenticationService {
         } else {
             return null;
         }
-    }
-
-    public Codes checkCode(String code) {
-        Optional<Codes> codes = codeRepository.findByCode(code);
-        if (codes.isPresent()) {
-            codes.get().getCode();
-            try {
-                return codes.get();
-            } catch (Exception e) {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-
-    public Codes registerCodes(Integer username, String codigo, String dataCode, String dateCodeEx) {
-            Codes code = new Codes();
-            code.setUserId(username);
-            code.setCode(codigo);
-            code.setDateCode(dataCode);
-            code.setDateCodeEx(dateCodeEx);
-        return codeRepository.save(code);
     }
 }

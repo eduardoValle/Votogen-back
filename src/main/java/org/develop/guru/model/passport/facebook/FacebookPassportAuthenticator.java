@@ -3,9 +3,9 @@ package org.develop.guru.model.passport.facebook;
 import java.util.Optional;
 
 import org.develop.guru.model.passport.PassportAuthenticator;
+import org.develop.guru.repository.PassportRepository;
 import org.develop.guru.security.SystemUser;
 import org.develop.guru.security.SystemUserRepository;
-import org.develop.guru.repository.PassportRepository;
 
 import org.develop.guru.service.FacebookService;
 import org.json.JSONObject;

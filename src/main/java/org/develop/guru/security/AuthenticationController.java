@@ -2,17 +2,14 @@ package org.develop.guru.security;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.develop.guru.config.TokenUtils;
-import org.develop.guru.entities.Codes;
 import org.develop.guru.model.passport.facebook.FacebookConfiguration;
 import org.develop.guru.properties.Properties;
-import org.develop.guru.repository.CodeRepository;
 import org.develop.guru.service.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,11 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("auth")
@@ -53,9 +45,6 @@ public class AuthenticationController {
 
     @Autowired
     private TokenUtils tokenUtils;
-
-    @Autowired
-    private CodeRepository codeRepository;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public Response authenticationRequest(@RequestBody @Valid AuthenticationRequest authenticationRequest) {
@@ -135,36 +124,6 @@ public class AuthenticationController {
         SystemUser user = authenticationService.newPassword(id, request.getPassword());
         if (user != null) {
             return ResponseEntity.ok(new RegisterResponse("Alterações realizadas com sucesso!"));
-        } else
-            return ResponseEntity.badRequest().body(null);
-
-    }
-
-    @RequestMapping(value = "checkEmail", method = RequestMethod.POST)
-    public ResponseEntity<UserResponse> checkEmail(@RequestBody @Valid CheckEmailRequest request)
-            throws ParseException {
-        SystemUser user = authenticationService.checkEmail(request.getEmail());
-        CodeService codes = new CodeService();
-        String codigo = codes.codeService();
-        Codes code = authenticationService.registerCodes(user.getId(), codigo, LocalDateTime.now().toString(), LocalDateTime.now().plusDays(1).toString());
-        if (user != null) {
-            ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
-            EmailService mm = (EmailService) context.getBean("mailMail");
-            mm.sendMail(user.getName(),
-                    user.getEmail(),
-                    codigo);
-            return ResponseEntity.ok(new UserResponse("Email encontrado!"));
-        } else
-            return ResponseEntity.badRequest().body(null);
-
-    }
-
-    @RequestMapping(value = "checkCode", method = RequestMethod.POST)
-    public ResponseEntity<CodeResponse> checkCode(@RequestBody @Valid CheckCodeRequest request)
-            throws ParseException {
-        Codes code = authenticationService.checkCode(request.getCodigo());
-        if (code != null) {
-            return ResponseEntity.ok(new CodeResponse(code.getUserId(),"Codigo encontrado!"));
         } else
             return ResponseEntity.badRequest().body(null);
 
