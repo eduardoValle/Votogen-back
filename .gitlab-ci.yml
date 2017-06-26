@@ -12,10 +12,10 @@ deploy:
   image: registry.gitlab.com/gitlab-examples/kubernetes-deploy
   environment: production
   only:
-      - master@guru/guru-back
+      - master@votogen/votogen-back
   script:
-    - sed -i "s/__CI_IMAGE_TAG__/$CI_BUILD_REF/" guru-deployment.yml
+    - sed -i "s/__CI_IMAGE_TAG__/$CI_BUILD_REF/" votogen-deployment.yml
     - kubectl config set-cluster test-doc --server=http://localhost:8080
     - kubectl config set-context test-doc --cluster=test-doc
     - kubectl config use-context test-doc
-    - kubectl create -f guru-deployment.yml || kubectl apply -f guru-deployment.yml
+    - kubectl create -f votogen-deployment.yml || kubectl apply -f votogen-deployment.yml

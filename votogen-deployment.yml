@@ -1,21 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: guru-back
+  name: votogen-back
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: guru-back
+      name: votogen-back
   template:
     metadata:
-      name: guru-back
+      name: votogen-back
       labels:
-        name: guru-back
+        name: votogen-back
     spec:
       containers:
-      - name: guru-back
-        image: guru/guru-back:__CI_IMAGE_TAG__
+      - name: votogen-back
+        image: votogen/votogen-back:__CI_IMAGE_TAG__
         ports:
         - name: http
           containerPort: 80
@@ -24,9 +24,9 @@ spec:
           - name: SYSTEM_ENVIRONMENT
             value: "production"
           - name: DATASOURCE_URL
-            value: "jdbc:mysql://199.189.87.11/guru?autoReconnect=true&useSSL=false"
+            value: "jdbc:mysql://199.189.87.11/votogen?autoReconnect=true&useSSL=false"
           - name: DATASOURCE_USERNAME
-            value: "guru"
+            value: "votogen"
           - name: DATASOURCE_PASSWORD
             value: "wSHWsX3JyEQHOdzt7g5W"
           - name: JAVA_OPTS
@@ -35,27 +35,27 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: guru-back
+  name: votogen-back
   labels:
-    name: guru-back
+    name: votogen-back
 spec:
   ports:
     - name: http
       port: 80
       targetPort: http
   selector:
-    name: guru-back
+    name: votogen-back
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: guru-back
+  name: votogen-back
 spec:
   rules:
-  - host: guruapi.condor1693.dedicatedpanel.com
+  - host: votogenapi.condor1693.dedicatedpanel.com
     http:
       paths:
       - path:
         backend:
-          serviceName: guru-back
+          serviceName: votogen-back
           servicePort: 80
